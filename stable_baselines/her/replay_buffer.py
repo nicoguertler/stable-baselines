@@ -122,7 +122,10 @@ class HindsightExperienceReplayWrapper(object):
         else:
             raise ValueError("Invalid goal selection strategy,"
                              "please use one of {}".format(list(GoalSelectionStrategy)))
-        return self.env.convert_obs_to_dict(selected_transition[0])['achieved_goal']
+        if self.goal_selection_strategy == GoalSelectionStrategy.FINAL:
+            return self.env.convert_obs_to_dict(selected_transition[3])['achieved_goal']
+        else:
+            return self.env.convert_obs_to_dict(selected_transition[0])['achieved_goal']
 
     def _sample_achieved_goals(self, episode_transitions, transition_idx):
         """
